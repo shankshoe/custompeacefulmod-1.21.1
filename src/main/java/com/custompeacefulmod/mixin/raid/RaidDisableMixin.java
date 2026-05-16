@@ -2,7 +2,7 @@ package com.custompeacefulmod.mixin.raid;
 
 import com.custompeacefulmod.state.CustomPeacefulState;
 import com.custompeacefulmod.state.CustomPeacefulStateManager;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.village.raid.Raid;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,25 +12,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Raid.class)
 public class RaidDisableMixin {
 
-    @Inject(method = "tick", at = @At("HEAD"))
-    private void disableRaid(CallbackInfo ci) {
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    private void custompeaceful$disableRaid(ServerWorld world, CallbackInfo ci) {
 
-        Raid raid = (Raid) (Object) this;
-
-        // Get server safely
-        MinecraftServer server = raid.getWorld().getServer();
-
-        if (server == null) {
+        if (world == null || world.getServer() == null) {
             return;
         }
 
-        // Get persistent state
         CustomPeacefulState state =
-                CustomPeacefulStateManager.getServerState(server);
+                CustomPeacefulStateManager.getServerState(world.getServer());
 
-        // Only disable raids when CustomPeaceful is enabled
-        if (state.isCustomPeaceful()) {
-            raid.invalidate();
+        if (state != null && state.isCustomPeaceful()) {
+            ci.cancel();
         }
     }
 }

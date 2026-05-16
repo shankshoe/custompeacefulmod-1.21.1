@@ -26,12 +26,10 @@ public class SensorMixin {
             CallbackInfoReturnable<Boolean> cir
     ) {
 
-        // only mobs
         if (!(mob instanceof MobEntity mobEntity)) {
             return;
         }
 
-        // only block player targeting
         if (!(target instanceof PlayerEntity)) {
             return;
         }

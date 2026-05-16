@@ -1,8 +1,10 @@
 package com.custompeacefulmod.state;
 
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper.WrapperLookup;
+import net.minecraft.datafixer.DataFixTypes;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.PersistentState;
+import net.minecraft.world.PersistentStateType;
 
 public class CustomPeacefulState extends PersistentState {
 
@@ -10,32 +12,38 @@ public class CustomPeacefulState extends PersistentState {
     private double spawnrates;
 
     public CustomPeacefulState() {
-        this.isCustomPeaceful = false;
-        this.spawnrates = 1.0;
+        this(false, 1.0);
     }
 
-    public static CustomPeacefulState fromNbt(NbtCompound nbt, WrapperLookup lookup) {
-        CustomPeacefulState state = new CustomPeacefulState();
-
-        state.isCustomPeaceful = nbt.getBoolean("isCustomPeaceful");
-        state.spawnrates = nbt.getDouble("spawnrates");
-
-        return state;
+    public CustomPeacefulState(boolean isCustomPeaceful, double spawnrates) {
+        this.isCustomPeaceful = isCustomPeaceful;
+        this.spawnrates = spawnrates;
     }
 
-    @Override
-    public NbtCompound writeNbt(NbtCompound nbt, WrapperLookup lookup) {
-        nbt.putBoolean("isCustomPeaceful", isCustomPeaceful);
-        nbt.putDouble("spawnrates", spawnrates);
-        return nbt;
-    }
+    public static final Codec<CustomPeacefulState> CODEC =
+            RecordCodecBuilder.create(instance -> instance.group(
+                    Codec.BOOL.fieldOf("isCustomPeaceful")
+                            .forGetter(s -> s.isCustomPeaceful),
+                    Codec.DOUBLE.fieldOf("spawnrates")
+                            .forGetter(s -> s.spawnrates)
+            ).apply(instance, CustomPeacefulState::new));
+
+
+public static final PersistentStateType<CustomPeacefulState> TYPE =
+        new PersistentStateType<CustomPeacefulState>(
+                "custompeaceful_state",
+                CustomPeacefulState::new,
+                CODEC,
+                DataFixTypes.LEVEL
+        );
+            
 
     public boolean isCustomPeaceful() {
         return isCustomPeaceful;
     }
 
-    public void setCustomPeaceful(boolean customPeaceful) {
-        this.isCustomPeaceful = customPeaceful;
+    public void setCustomPeaceful(boolean value) {
+        this.isCustomPeaceful = value;
         markDirty();
     }
 
@@ -46,14 +54,5 @@ public class CustomPeacefulState extends PersistentState {
     public void setSpawnrates(double spawnrates) {
         this.spawnrates = Math.max(0.0, Math.min(100.0, spawnrates));
         markDirty();
-    }
-
-    // TYPE FACTORY (UPDATED LAMBDA SIGNATURE)
-    public static Type<CustomPeacefulState> getType() {
-        return new Type<>(
-                CustomPeacefulState::new,
-                CustomPeacefulState::fromNbt,
-                null
-        );
     }
 }

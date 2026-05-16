@@ -5,6 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.sensor.Sensor;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,6 +20,7 @@ public class SensorMixin {
             cancellable = true
     )
     private static void custompeaceful$preventBrainTargeting(
+            ServerWorld world,
             LivingEntity mob,
             LivingEntity target,
             CallbackInfoReturnable<Boolean> cir

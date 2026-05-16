@@ -3,6 +3,7 @@ package com.custompeacefulmod.mixin.explosion;
 import com.custompeacefulmod.logic.ExplosionLogic;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,6 +18,7 @@ public abstract class ExplosionDamageMixin {
             cancellable = true
     )
     private void custompeaceful$preventExplosionDamage(
+            ServerWorld world,
             DamageSource source,
             float amount,
             CallbackInfoReturnable<Boolean> cir

@@ -38,8 +38,11 @@ public class InteractionLogic {
         World world = player.getWorld();
 
         if (world.isClient()) return false;
-        if (!(world.getServer() instanceof MinecraftServer server)) return false;
+        if (!(world instanceof net.minecraft.server.world.ServerWorld serverWorld)) {
+            return false;
+        }
 
+        MinecraftServer server = serverWorld.getServer();
         CustomPeacefulState state = CustomPeacefulStateManager.getServerState(server);
 
         if (!state.isCustomPeaceful()) {
@@ -60,7 +63,7 @@ public class InteractionLogic {
                     net.minecraft.entity.EquipmentSlot.MAINHAND : net.minecraft.entity.EquipmentSlot.OFFHAND
                 );
 
-        entity.dropStack(new ItemStack(dropItem, 1));
+        entity.dropStack(serverWorld, new ItemStack(dropItem, 1));
 
         world.playSound(
                 null,

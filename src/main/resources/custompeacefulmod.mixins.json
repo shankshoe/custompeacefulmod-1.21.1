@@ -1,0 +1,26 @@
+{
+	"required": true,
+	"package": "com.custompeacefulmod.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"spawn.SpawnRatesMixin",
+		"ai.MobTargettingMixin",
+		"ai.SensorMixin",
+		"ai.BrainTargetCleanupMixin",
+		"explosion.ExplosionDamageMixin",
+		"regen.RegenerationMixin",
+		"hunger.PlayerHungerResetMixin",
+		"raid.RaidDisableMixin",
+		"entity.VindicatorMixin",
+		"entity.PillagerMixin",
+		"entity.BreezeInteraction",
+		"entity.BlazeInteraction",
+		"entity.WitherSkeletonInteraction"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

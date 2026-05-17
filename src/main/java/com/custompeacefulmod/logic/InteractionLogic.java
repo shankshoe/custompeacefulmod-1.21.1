@@ -35,7 +35,7 @@ public class InteractionLogic {
             Hand hand,
             net.minecraft.item.Item dropItem
     ) {
-        World world = player.getWorld();
+        World world = player.getEntityWorld();
 
         if (world.isClient()) return false;
         if (!(world instanceof net.minecraft.server.world.ServerWorld serverWorld)) {

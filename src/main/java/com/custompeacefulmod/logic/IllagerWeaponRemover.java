@@ -11,7 +11,7 @@ public class IllagerWeaponRemover {
 
     public static void tryRemoveWeapon(MobEntity mob) {
 
-        MinecraftServer server = mob.getWorld().getServer();
+        MinecraftServer server = mob.getEntityWorld().getServer();
 
         // Safety check
         if (server == null) {

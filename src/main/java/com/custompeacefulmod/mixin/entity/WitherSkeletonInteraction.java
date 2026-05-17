@@ -16,9 +16,9 @@ public class WitherSkeletonInteraction {
 
         ItemEntity self = (ItemEntity)(Object)this;
 
-        if (self.getWorld().isClient()) return;
+        if (self.getEntityWorld().isClient()) return;
         if (self.age % 40 != 0) return;
-        if (!(self.getWorld() instanceof ServerWorld serverWorld)) return;
+        if (!(self.getEntityWorld() instanceof ServerWorld serverWorld)) return;
 
         if (!self.getStack().isOf(net.minecraft.item.Items.CARVED_PUMPKIN)) return;
 

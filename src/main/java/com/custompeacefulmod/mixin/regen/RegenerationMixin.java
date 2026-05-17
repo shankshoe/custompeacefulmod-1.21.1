@@ -18,12 +18,12 @@ public abstract class RegenerationMixin {
         PlayerEntity player = (PlayerEntity) (Object) this;
 
         // Only run on server side
-        if (player.getWorld().isClient()) {
+        if (player.getEntityWorld().isClient()) {
             return;
         }
 
         // Get server instance from world
-        if (!(player.getWorld() instanceof ServerWorld serverWorld)) {
+        if (!(player.getEntityWorld() instanceof ServerWorld serverWorld)) {
             return;
         }
 

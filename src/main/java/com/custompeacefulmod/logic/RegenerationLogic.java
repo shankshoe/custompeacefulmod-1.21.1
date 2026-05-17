@@ -17,7 +17,7 @@ public class RegenerationLogic {
             return;
         }
 
-        if (player.getWorld().isClient()) {
+        if (player.getEntityWorld().isClient()) {
             return;
         }
 

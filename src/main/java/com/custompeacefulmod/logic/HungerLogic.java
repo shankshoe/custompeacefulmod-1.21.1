@@ -21,9 +21,9 @@ public class HungerLogic {
     public static void handleHungerTick(PlayerEntity player) {
 
         // SERVER ONLY
-        if (player.getWorld().isClient()) return;
+        if (player.getEntityWorld().isClient()) return;
 
-        MinecraftServer server = player.getServer();
+        MinecraftServer server = player.getEntityWorld().getServer();
         if (server == null) return;
 
         CustomPeacefulState state = CustomPeacefulStateManager.getServerState(server);

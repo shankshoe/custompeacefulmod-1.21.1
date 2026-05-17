@@ -21,7 +21,7 @@ public class AggressionLogic {
             return false;
         }
 
-        MinecraftServer server = mob.getServer();
+        MinecraftServer server = mob.getEntityWorld().getServer();
 
         if (server == null) {
             return false;
@@ -35,7 +35,7 @@ public class AggressionLogic {
 
     public static boolean isCustomPeacefulEnabled(Entity entity) {
 
-        MinecraftServer server = entity.getServer();
+        MinecraftServer server = entity.getEntityWorld().getServer();
 
         if (server == null) {
             return false;

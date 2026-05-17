@@ -14,7 +14,7 @@ public class ExplosionLogic {
             DamageSource source
     ) {
 
-        MinecraftServer server = player.getServer();
+        MinecraftServer server = player.getEntityWorld().getServer();
 
         // Safety check
         if (server == null) {

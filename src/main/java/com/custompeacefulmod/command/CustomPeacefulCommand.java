@@ -7,38 +7,41 @@ import com.mojang.brigadier.arguments.DoubleArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+import net.minecraft.command.permission.LeveledPermissionPredicate;
+import net.minecraft.command.permission.PermissionLevel;
+import net.minecraft.command.permission.Permission;
 
 public class CustomPeacefulCommand {
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
 
         dispatcher.register(
-                CommandManager.literal("custompeaceful")
-                        .requires(source -> source.hasPermissionLevel(2))
+        CommandManager.literal("custompeaceful")
 
-                        .then(CommandManager.argument("enabled", BoolArgumentType.bool())
-                                .then(CommandManager.argument("spawnRates", DoubleArgumentType.doubleArg(0.0, 100.0))
-                                        .executes(ctx -> {
+        .requires(source -> source.getPermissions().hasPermission(new Permission.Level(PermissionLevel.ADMINS)))
+                .then(CommandManager.argument("enabled", BoolArgumentType.bool())
+                        .then(CommandManager.argument("spawnRates", DoubleArgumentType.doubleArg(0.0, 100.0))
+                                .executes(ctx -> {
 
-                                            boolean enabled = BoolArgumentType.getBool(ctx, "enabled");
-                                            double spawnRates = DoubleArgumentType.getDouble(ctx, "spawnRates");
+                                    boolean enabled = BoolArgumentType.getBool(ctx, "enabled");
+                                    double spawnRates = DoubleArgumentType.getDouble(ctx, "spawnRates");
 
-                                            var server = ctx.getSource().getServer();
-                                            var state = CustomPeacefulStateManager.getServerState(server);
+                                    var server = ctx.getSource().getServer();
+                                    var state = CustomPeacefulStateManager.getServerState(server);
 
-                                            state.setCustomPeaceful(enabled);
-                                            state.setSpawnrates(spawnRates);
+                                    state.setCustomPeaceful(enabled);
+                                    state.setSpawnrates(spawnRates);
 
-                                            ctx.getSource().sendFeedback(
-                                                    () -> Text.literal("Custom Peaceful set to " + enabled +
-                                                            " | Spawn rates: " + spawnRates),
-                                                    true
-                                            );
+                                    ctx.getSource().sendFeedback(
+                                            () -> Text.literal("Custom Peaceful set to " + enabled +
+                                                    " | Spawn rates: " + spawnRates),
+                                            true
+                                    );
 
-                                            return 1;
-                                        })
-                                )
+                                    return 1;
+                                })
                         )
-        );
+                )
+);
     }
 }
